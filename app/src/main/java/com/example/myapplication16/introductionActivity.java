@@ -1,9 +1,13 @@
 package com.example.myapplication16;
+import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
+
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -13,8 +17,13 @@ public class introductionActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        Log.i(TAG, "onCreate: Hello World!");
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_introduction);
+        setProgress(false);
+
 
         // Find the Connect button by its ID
         connectButton = findViewById(R.id.connectButton);
@@ -24,36 +33,26 @@ public class introductionActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // Execute the AsyncTask to connect to the server
-                new ConnectToServerTask().execute();
+                ConnectionAsyncTask connectionAsyncTask = new ConnectionAsyncTask(introductionActivity.this);
+                connectionAsyncTask.execute("https://658582eb022766bcb8c8c86e.mockapi.io/api/mock/rest-apis/encs5150/car-types");
             }
         });
     }
 
-    // AsyncTask to handle the connection to the server
-    private class ConnectToServerTask extends AsyncTask<Void, Void, Boolean> {
-        @Override
-        protected Boolean doInBackground(Void... voids) {
-            // Implement the logic to connect to the server using REST
-            // Return true if successful, false otherwise
-            return makeServerRequest();
-        }
+    void setButtonText(String text) {
+        connectButton.setText(text);
+    }
 
-        @Override
-        protected void onPostExecute(Boolean success) {
-            if (success) {
-                // Connection successful, proceed to the login and registration section
-                startActivity(new Intent(introductionActivity.this,LoginRegistrationActivity1.class));
-            } else {
-                // Connection unsuccessful, display an error message
-                Toast.makeText(introductionActivity.this, "Connection failed. Please try again.", Toast.LENGTH_SHORT).show();
-            }
+    public void setProgress(boolean progress) {
+        ProgressBar progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        if (progress) {
+            progressBar.setVisibility(View.VISIBLE);
+        } else {
+            progressBar.setVisibility(View.GONE);
         }
     }
 
-    // Example method to make a server request
-    private boolean makeServerRequest() {
-        // Implement the logic to make a server request
-        // Return true if successful, false otherwise
-        return false; // Placeholder, replace with actual implementation
+    public void toLogin(){
+        startActivity(new Intent(introductionActivity.this,LoginRegistrationActivity1.class));
     }
 }
