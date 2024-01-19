@@ -30,6 +30,8 @@ public class LoginRegistrationActivity1 extends AppCompatActivity {
 
         sharedPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
 
+        emailEditText.setText(getIntent().getStringExtra("email"));
+
         // Check if the email is already saved in shared preferences
         String savedEmail = sharedPreferences.getString(PREF_EMAIL, "");
         if (!savedEmail.isEmpty()) {
@@ -74,6 +76,11 @@ public class LoginRegistrationActivity1 extends AppCompatActivity {
             }
         });
     }
+
+    public void setEmail(String email) {
+        emailEditText.setText(email);
+    }
+
 
     // Replace this with your actual login logic
     private boolean performLogin(String email, String password) {

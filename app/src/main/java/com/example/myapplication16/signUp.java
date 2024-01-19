@@ -1,8 +1,14 @@
 package com.example.myapplication16;
 
+
+import static com.example.myapplication16.DatabaseHelper.DATABASE_NAME;
+
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
@@ -14,11 +20,10 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class signUp extends AppCompatActivity {
-
-
-
-
 
         private EditText firstNameEditText;
         private EditText lastNameEditText;
@@ -30,13 +35,19 @@ public class signUp extends AppCompatActivity {
         private EditText phoneNumberEditText;
         private Button registerButton;
 
-        // You can add more countries and cities as needed
-        private static final String[] countries = {"palestine", "UK","USA","Qater"};
-        private static final String[][] cities = {{"Ramallah", "nubles", "bethlahem"}, {"london", "liverpool", "Birmingham"},{"florida","dalles","houston"},{"doha","al khor","mesaieed","al wakrah"}};
+        private EditText email;
 
+        // You can add more countries and cities as needed
+        private static final String[] countries = {"Palestine", "UK","USA","Qatar"};
+        private static final String[][] cities = {{"Ramallah", "Nablus", "Bethlahem"}, {"london", "liverpool", "Birmingham"},{"florida","dalles","houston"},{"doha","al khor","mesaieed","al wakrah"}};
+
+        private static final String [] phoneCodes= {"+970","+44","+1","+974"};
+
+        String currentCode = "+970";
         private DatabaseHelper dbHelper;
 
-        @Override
+
+    @Override
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_sign_up);
@@ -51,13 +62,12 @@ public class signUp extends AppCompatActivity {
             citySpinner = findViewById(R.id.citySpinner);
             phoneNumberEditText = findViewById(R.id.phoneNumberEditText);
             registerButton = findViewById(R.id.registerButton);
+            email = findViewById(R.id.EmailEditText);
 
             // Set up spinners
             setUpGenderSpinner();
             setUpCountrySpinner();
 
-            // Initialize DatabaseHelper
-            dbHelper = new DatabaseHelper(this);
 
             // Set a click listener for the "Register" button
             registerButton.setOnClickListener(new View.OnClickListener() {
@@ -89,6 +99,8 @@ public class signUp extends AppCompatActivity {
                 @Override
                 public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                     updateCitySpinner(position);
+                    currentCode = phoneCodes[position];
+                    phoneNumberEditText.setText(currentCode + " ");
                 }
 
                 @Override
@@ -115,6 +127,7 @@ public class signUp extends AppCompatActivity {
             String country = countrySpinner.getSelectedItem().toString();
             String city = citySpinner.getSelectedItem().toString();
             String phoneNumber = phoneNumberEditText.getText().toString().trim();
+            String emailAdd = email.getText().toString().trim();
 
             // Validate inputs
             if (firstName.length() < 3 || lastName.length() < 3) {
@@ -132,11 +145,39 @@ public class signUp extends AppCompatActivity {
                 return;
             }
 
+            Pattern p = Pattern.compile(".+@.+\\.[a-z]+");
+            Matcher m = p.matcher(emailAdd);
+            boolean matchFound = m.matches();
+
+            if(!matchFound){
+                showToast("Add Valid Email");
+                return;
+            }
+
+            User toInsert = new User();
+
+            toInsert.setCity(city);
+            toInsert.setCountry(country);
+            toInsert.setGender(gender);
+            toInsert.setFirstName(firstName);
+            toInsert.setLastName(lastName);
+            toInsert.setPhoneNum(phoneNumber);
+            toInsert.setPassword(password);
+            toInsert.setEmailAddress(emailAdd);
+
+            DatabaseHelper dataBaseHelper =new DatabaseHelper(signUp.this,DATABASE_NAME,null,1);
+
+
             // Perform registration and insert data into the database
-            insertUserData(firstName, lastName, gender, password, country, city, phoneNumber);
+            dataBaseHelper.insertUserData(toInsert);
 
             // Show a success message
             showToast("Registration successful! User: " + firstName + " " + lastName + ", Country: " + country + ", City: " + city + ", Phone: " + phoneNumber);
+
+            Intent intent=new Intent(signUp.this, LoginRegistrationActivity1.class);
+            intent.putExtra("email",emailAdd);
+            startActivity(intent);
+
         }
 
         private boolean isPasswordValid(String password) {
@@ -148,26 +189,7 @@ public class signUp extends AppCompatActivity {
             Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
         }
 
-        private void insertUserData(String firstName, String lastName, String gender, String password, String country, String city, String phoneNumber) {
-            // Open a writable database
-            SQLiteDatabase db = dbHelper.getWritableDatabase();
 
-            // Create a ContentValues object to store key-value pairs
-            ContentValues values = new ContentValues();
-            values.put(DatabaseHelper.COLUMN_FIRST_NAME, firstName);
-            values.put(DatabaseHelper.COLUMN_LAST_NAME, lastName);
-            values.put(DatabaseHelper.COLUMN_GENDER, gender);
-            values.put(DatabaseHelper.COLUMN_PASSWORD, password);
-            values.put(DatabaseHelper.COLUMN_COUNTRY, country);
-            values.put(DatabaseHelper.COLUMN_CITY, city);
-            values.put(DatabaseHelper.COLUMN_PHONE_NUMBER, phoneNumber);
-
-            // Insert the data into the "user" table
-            db.insert(DatabaseHelper.TABLE_NAME, null, values);
-
-            // Close the database
-            db.close();
-        }
     }
 
 
