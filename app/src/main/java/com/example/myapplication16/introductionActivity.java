@@ -2,13 +2,12 @@ package com.example.myapplication16;
 import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
-import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 public class introductionActivity extends AppCompatActivity {
@@ -33,8 +32,8 @@ public class introductionActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // Execute the AsyncTask to connect to the server
-                ConnectionAsyncTask connectionAsyncTask = new ConnectionAsyncTask(introductionActivity.this);
-                connectionAsyncTask.execute("https://658582eb022766bcb8c8c86e.mockapi.io/api/mock/rest-apis/encs5150/car-types");
+                ConnectionAsyncTask connectionAsyncTask = new ConnectionAsyncTask(introductionActivity.this, introductionActivity.this);
+                connectionAsyncTask.execute("https://lab-android.free.beeceptor.com/cars");
             }
         });
     }
