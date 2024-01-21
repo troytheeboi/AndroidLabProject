@@ -13,6 +13,8 @@ public class User {
 
     private String EmailAddress;
 
+    private int isAdmin;
+
     public int getId() {
         return Id;
     }
@@ -88,7 +90,15 @@ public class User {
         EmailAddress = emailAddress;
     }
 
-    public User(int id, String firstName, String lastName, String gender, String password, String country, String city, String phoneNum, String emailAddress) {
+    public int getIsAdmin() {
+        return isAdmin;
+    }
+
+    public void setIsAdmin(int isAdmin) {
+        this.isAdmin = isAdmin;
+    }
+
+    public User(int id, String firstName, String lastName, String gender, String password, String country, String city, String phoneNum, String emailAddress, int isAdmin) {
         Id = id;
         FirstName = firstName;
         LastName = lastName;
@@ -98,6 +108,7 @@ public class User {
         City = city;
         PhoneNum = phoneNum;
         EmailAddress = emailAddress;
+        this.isAdmin = isAdmin;
     }
 
     @Override
@@ -112,6 +123,7 @@ public class User {
                 ", City='" + City + '\'' +
                 ", PhoneNum='" + PhoneNum + '\'' +
                 ", EmailAddress='" + EmailAddress + '\'' +
+                ", isAdmin=" + isAdmin +
                 '}';
     }
 }

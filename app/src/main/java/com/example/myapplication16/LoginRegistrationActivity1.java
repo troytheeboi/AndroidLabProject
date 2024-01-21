@@ -1,8 +1,11 @@
 package com.example.myapplication16;
 
+import static com.example.myapplication16.DatabaseHelper.DATABASE_NAME;
+
 import android.content.Intent;
-import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -15,9 +18,8 @@ public class LoginRegistrationActivity1 extends AppCompatActivity {
 
     private EditText emailEditText, passwordEditText;
     private CheckBox rememberMeCheckBox;
-    private SharedPreferences sharedPreferences;
-    private static final String PREF_NAME = "MyPrefs";
-    private static final String PREF_EMAIL = "email";
+
+    SharedPrefManager sharedPrefManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,13 +30,14 @@ public class LoginRegistrationActivity1 extends AppCompatActivity {
         passwordEditText = findViewById(R.id.passwordEditText);
         rememberMeCheckBox = findViewById(R.id.rememberMeCheckBox);
 
-        sharedPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+        sharedPrefManager =SharedPrefManager.getInstance(this);
 
         emailEditText.setText(getIntent().getStringExtra("email"));
 
         // Check if the email is already saved in shared preferences
-        String savedEmail = sharedPreferences.getString(PREF_EMAIL, "");
-        if (!savedEmail.isEmpty()) {
+        String savedEmail = sharedPrefManager.readString("email","noValue");
+
+        if (!savedEmail.equals("noValue")) {
             emailEditText.setText(savedEmail);
             rememberMeCheckBox.setChecked(true);
         }
@@ -44,22 +47,52 @@ public class LoginRegistrationActivity1 extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Get the entered email and password
-                String enteredEmail = emailEditText.getText().toString();
+                String enteredEmail = emailEditText.getText().toString().trim();
+                System.out.println("Email is ------" + enteredEmail + "------");
                 String enteredPassword = passwordEditText.getText().toString();
 
                 // Replace this with your actual login logic (check against database, etc.)
-                boolean loginSuccess = performLogin(enteredEmail, enteredPassword);
+                
+                boolean loginSuccess = false;
+
+                if( !enteredEmail.isEmpty() && !enteredPassword.isEmpty()){
+                    
+                    DatabaseHelper dbHelper =new DatabaseHelper(LoginRegistrationActivity1.this,DATABASE_NAME,null,1);
+
+                    Cursor getUserByMail = dbHelper.getByEmail(enteredEmail);
+
+                    getUserByMail.moveToNext();
+                    
+
+                    boolean exists = dbHelper.isCursorEmpty(getUserByMail);
+
+                    if (exists) {
+                        Toast.makeText(LoginRegistrationActivity1.this, "No Account with this email exists", Toast.LENGTH_SHORT).show();
+                        loginSuccess = false;
+                    }else{
+
+                        String password = getUserByMail.getString(5);
+
+                        if(password.equals(enteredPassword)){
+                            loginSuccess = true;
+                        }else{
+                            Toast.makeText(LoginRegistrationActivity1.this, "Password doesn't match!", Toast.LENGTH_SHORT).show();
+                            loginSuccess = false;
+                        }
+
+                    }
+                }
+
+                
 
                 if (loginSuccess) {
                     // If login is successful, save the email in shared preferences if "Remember Me" is checked
                     if (rememberMeCheckBox.isChecked()) {
-                        SharedPreferences.Editor editor = sharedPreferences.edit();
-                        editor.putString(PREF_EMAIL, enteredEmail);
-                        editor.apply();
+                        sharedPrefManager.writeString("email",emailEditText.getText().toString());
+                        sharedPrefManager.writeString("password",passwordEditText.getText().toString());
+                        Toast.makeText(LoginRegistrationActivity1.this, "Values written to shared Preferences", Toast.LENGTH_SHORT).show();
                     }
 
-                    // Navigate to the special menu or another activity
-                    // Example: startActivity(new Intent(LoginRegistrationActivity1.this, SpecialMenuActivity.class));
                     Toast.makeText(LoginRegistrationActivity1.this, "Login successful!", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(LoginRegistrationActivity1.this, "Login failed. Check your credentials.", Toast.LENGTH_SHORT).show();
@@ -77,13 +110,9 @@ public class LoginRegistrationActivity1 extends AppCompatActivity {
         });
     }
 
-    public void setEmail(String email) {
-        emailEditText.setText(email);
-    }
 
 
-    // Replace this with your actual login logic
-    private boolean performLogin(String email, String password) {
+    private boolean validFields(String email, String password) {
         return !email.isEmpty() && !password.isEmpty();
     }
 }

@@ -2,6 +2,7 @@ package com.example.myapplication16;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.DatabaseErrorHandler;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -41,36 +42,39 @@ public class DatabaseHelper extends android.database.sqlite.SQLiteOpenHelper {
     public static final String COLUMN_CAR_COLOR = "color";
     public static final String COLUMN_CAR_DOORS = "doors";
     public static final String COLUMN_CAR_IMAGE = "image";
+
+    private static final String COLUMN_IS_ADMIN = "isAdmin";
     // Database creation SQL statement
     private static final String DATABASE_CREATE =
 
             "create table " + TABLE_NAME + "(" +
-            COLUMN_ID + " integer primary key autoincrement, " +
-            COLUMN_FIRST_NAME + " text not null, " +
-            COLUMN_LAST_NAME + " text not null, " +
-            COLUMN_GENDER + " text not null, " +
-            COLUMN_EMAIL + " text not null, " +
-            COLUMN_PASSWORD + " text not null, " +
-            COLUMN_COUNTRY + " text not null, " +
-            COLUMN_CITY + " text not null, " +
-            COLUMN_PHONE_NUMBER + " text not null);";
+                    COLUMN_ID + " integer primary key autoincrement, " +
+                    COLUMN_FIRST_NAME + " text not null, " +
+                    COLUMN_LAST_NAME + " text not null, " +
+                    COLUMN_GENDER + " text not null, " +
+                    COLUMN_EMAIL + " text not null, " +
+                    COLUMN_PASSWORD + " text not null, " +
+                    COLUMN_COUNTRY + " text not null, " +
+                    COLUMN_CITY + " text not null, " +
+                    COLUMN_PHONE_NUMBER + " text not null, " +
+                    COLUMN_IS_ADMIN + " integer not null);";
 
     private static final String DATABASE_CREATE_CARS =
 
             "create table " + TABLE_CARS + "(" +
-            COLUMN_CAR_ID + " integer primary key, " +
-            COLUMN_CAR_TYPE + " text not null, " +
-            COLUMN_CAR_COMPANY + " text not null, " +
-            COLUMN_CAR_PRICE + " real not null, " +
-            COLUMN_CAR_OFFER + " real not null, " +
-            COLUMN_CAR_YEAR + " text not null, " +
-            COLUMN_CAR_FUEL_TYPE + " text not null, " +
-            COLUMN_CAR_RATING + " real not null, " +
-            COLUMN_CAR_ACCIDENT + " text not null, " +
-            COLUMN_CAR_SPARE + " text not null, " +
-            COLUMN_CAR_COLOR + " text not null, " +
-            COLUMN_CAR_DOORS + " integer not null, " +
-            COLUMN_CAR_IMAGE + " text not null);";
+                    COLUMN_CAR_ID + " integer primary key, " +
+                    COLUMN_CAR_TYPE + " text not null, " +
+                    COLUMN_CAR_COMPANY + " text not null, " +
+                    COLUMN_CAR_PRICE + " real not null, " +
+                    COLUMN_CAR_OFFER + " real not null, " +
+                    COLUMN_CAR_YEAR + " text not null, " +
+                    COLUMN_CAR_FUEL_TYPE + " text not null, " +
+                    COLUMN_CAR_RATING + " real not null, " +
+                    COLUMN_CAR_ACCIDENT + " text not null, " +
+                    COLUMN_CAR_SPARE + " text not null, " +
+                    COLUMN_CAR_COLOR + " text not null, " +
+                    COLUMN_CAR_DOORS + " integer not null, " +
+                    COLUMN_CAR_IMAGE + " text not null);";
 
 
 
@@ -103,8 +107,9 @@ public class DatabaseHelper extends android.database.sqlite.SQLiteOpenHelper {
         values.put(DatabaseHelper.COLUMN_PASSWORD, user.getPassword());
         values.put(DatabaseHelper.COLUMN_COUNTRY, user.getCountry());
         values.put(DatabaseHelper.COLUMN_CITY, user.getCity());
-        values.put(DatabaseHelper.COLUMN_PHONE_NUMBER, user.getPassword());
+        values.put(DatabaseHelper.COLUMN_PHONE_NUMBER, user.getPhoneNum());
         values.put(DatabaseHelper.COLUMN_EMAIL, user.getEmailAddress());
+        values.put(DatabaseHelper.COLUMN_IS_ADMIN,user.getIsAdmin());
 
         // Insert the data into the "user" table
         db.insert(DatabaseHelper.TABLE_NAME, null, values);
@@ -135,4 +140,17 @@ public class DatabaseHelper extends android.database.sqlite.SQLiteOpenHelper {
         db.insert(DatabaseHelper.TABLE_CARS, null, values);
 
     }
+
+    public Cursor getByEmail(String email) {
+        SQLiteDatabase sqLiteDatabase = getReadableDatabase();
+        String query = "SELECT * FROM user WHERE email = ?";
+        String[] selectionArgs = {email};
+        return sqLiteDatabase.rawQuery(query, selectionArgs);
+    }
+
+    public boolean isCursorEmpty(Cursor cursor) {
+        return cursor == null || !cursor.moveToFirst();
+    }
+
+
 }

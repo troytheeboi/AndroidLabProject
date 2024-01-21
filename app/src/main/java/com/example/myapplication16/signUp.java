@@ -164,6 +164,7 @@ public class signUp extends AppCompatActivity {
             toInsert.setPhoneNum(phoneNumber);
             toInsert.setPassword(password);
             toInsert.setEmailAddress(emailAdd);
+            toInsert.setIsAdmin(0);
 
             DatabaseHelper dataBaseHelper =new DatabaseHelper(signUp.this,DATABASE_NAME,null,1);
 

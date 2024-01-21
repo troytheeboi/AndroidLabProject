@@ -118,7 +118,7 @@
 
     <EditText
         android:id="@+id/EmailEditText"
-        android:layout_width="367dp"
+        android:layout_width="371dp"
         android:layout_height="45dp"
         android:ems="10"
         android:hint="E-Mail"
