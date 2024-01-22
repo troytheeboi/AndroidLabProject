@@ -150,6 +150,28 @@ public class DatabaseHelper extends android.database.sqlite.SQLiteOpenHelper {
 
     }
 
+    void UpdateUserData(User user) {
+        // Open a writable database
+        SQLiteDatabase db = getWritableDatabase();
+
+        // Create a ContentValues object to store key-value pairs
+        ContentValues values = new ContentValues();
+        values.put(DatabaseHelper.COLUMN_FIRST_NAME, user.getFirstName());
+        values.put(DatabaseHelper.COLUMN_LAST_NAME, user.getLastName());
+        values.put(DatabaseHelper.COLUMN_GENDER, user.getGender());
+        values.put(DatabaseHelper.COLUMN_PASSWORD, user.getPassword());
+        values.put(DatabaseHelper.COLUMN_COUNTRY, user.getCountry());
+        values.put(DatabaseHelper.COLUMN_CITY, user.getCity());
+        values.put(DatabaseHelper.COLUMN_PHONE_NUMBER, user.getPhoneNum());
+        values.put(DatabaseHelper.COLUMN_EMAIL, user.getEmailAddress());
+        values.put(DatabaseHelper.COLUMN_IS_ADMIN,user.getIsAdmin());
+
+        // Insert the data into the "user" table
+        db.update(DatabaseHelper.TABLE_NAME, values, "id = ?", new String[]{String.valueOf(user.getId())});
+
+
+    }
+
     void insertCarData(Car car) {
         // Open a writable database
         SQLiteDatabase db = getWritableDatabase();
@@ -319,6 +341,33 @@ public class DatabaseHelper extends android.database.sqlite.SQLiteOpenHelper {
         }
 
         return cars;
+
+
+    }
+
+    public User getUserById(int userId) {
+        SQLiteDatabase sqLiteDatabase = getReadableDatabase();
+
+        String query = "SELECT * FROM user  WHERE id= ?" ;
+        String[] selectionArgs = {String.valueOf(userId)};
+        Cursor cursor = sqLiteDatabase.rawQuery(query, selectionArgs);
+
+        cursor.moveToFirst();
+
+        User user = new User();
+
+        user.setId(cursor.getInt(0));
+        user.setFirstName(cursor.getString(1));
+        user.setLastName(cursor.getString(2));
+        user.setGender(cursor.getString(3));
+        user.setEmailAddress(cursor.getString(4));
+        user.setPassword(cursor.getString(5));
+        user.setCountry(cursor.getString(6));
+        user.setCity(cursor.getString(7));
+        user.setPhoneNum(cursor.getString(8));
+        user.setIsAdmin(cursor.getInt(9));
+
+        return user;
 
 
     }

@@ -183,7 +183,7 @@ public class signUp extends AppCompatActivity {
 
         }
 
-        private boolean isPasswordValid(String password) {
+        public static boolean isPasswordValid(String password) {
             // Password must be at least 5 characters and include a character, a number, and a special character
             return password.length() >= 5 && password.matches(".*[a-zA-Z]+.*") && password.matches(".*\\d+.*") && password.matches(".*[!@#$%^&*()_+\\-=\\[\\]{};':\",.<>/?]+.*");
         }
