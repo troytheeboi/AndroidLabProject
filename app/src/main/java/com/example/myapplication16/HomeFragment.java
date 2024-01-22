@@ -27,19 +27,7 @@ public class HomeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
         // Initialize UI components
-        specialOffersButton = view.findViewById(R.id.specialOffersButton);
         carImageView = view.findViewById(R.id.carImage);
-
-        // Set up click listener for the special offers button
-        specialOffersButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Handle the click event for viewing special offers
-                // You can navigate to a new fragment or activity
-            }
-        });
-
-        // Load or display content in the ImageView
 
         return view;
     }

@@ -1,33 +1,53 @@
 <!-- fragment_home.xml -->
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/relativeLayout4"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
+    <!-- Add other UI components specific to the home section -->
 
     <TextView
         android:id="@+id/welcomeTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Welcome to Car Dealer App!"
+        android:text="Welcome To Grand Prix Motors!"
+        android:textColor="#000000"
         android:textSize="24sp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp"/>
-
-    <!-- Add other UI components specific to the home section -->
-    <Button
-        android:id="@+id/specialOffersButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="View Special Offers"
-        android:layout_below="@id/welcomeTextView"
-        android:layout_marginTop="16dp"
-        android:layout_centerHorizontal="true"/>
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.493"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.037" />
 
     <ImageView
         android:id="@+id/carImage"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:src="@drawable/car"
-        android:layout_below="@id/specialOffersButton"
+        android:layout_width="336dp"
+        android:layout_height="222dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp"/>
-</RelativeLayout>
+        android:src="@drawable/car"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.179" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="335dp"
+        android:layout_height="329dp"
+        android:text="Welcome to Grand Prix Cars, where automotive passion meets unrivaled performance. Established in 1980, our dealership has become a global beacon for enthusiasts seeking top-tier luxury and sports cars. Our curated collection, ranging from iconic classics to cutting-edge models, reflects our commitment to delivering excellence. With a team of dedicated professionals and a deep-rooted connection to motorsports, Grand Prix Cars invites you to embark on a thrilling journey where every drive is an extraordinary experience. Your road to automotive excellence starts here – explore our app and discover the epitome of speed and precision with Grand Prix Cars. 🏁🚗✨"
+        android:textAlignment="center"
+        android:textColor="#040000"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.902" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

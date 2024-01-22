@@ -14,6 +14,9 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class LoginRegistrationActivity1 extends AppCompatActivity {
 
     private EditText emailEditText, passwordEditText;
@@ -46,14 +49,26 @@ public class LoginRegistrationActivity1 extends AppCompatActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                boolean loginSuccess = true;
+
+
+
                 // Get the entered email and password
                 String enteredEmail = emailEditText.getText().toString().trim();
-                System.out.println("Email is ------" + enteredEmail + "------");
                 String enteredPassword = passwordEditText.getText().toString();
 
-                // Replace this with your actual login logic (check against database, etc.)
-                
-                boolean loginSuccess = false;
+                Pattern p = Pattern.compile(".+@.+\\.[a-z]+");
+                Matcher m = p.matcher(enteredEmail);
+                boolean matchFound = m.matches();
+
+                if(!matchFound){
+                    Toast.makeText(LoginRegistrationActivity1.this, "No Account with this email exists", Toast.LENGTH_SHORT).show();
+                    loginSuccess = false;
+                }
+
+
+
 
                 if( !enteredEmail.isEmpty() && !enteredPassword.isEmpty()){
                     
@@ -90,10 +105,10 @@ public class LoginRegistrationActivity1 extends AppCompatActivity {
                     if (rememberMeCheckBox.isChecked()) {
                         sharedPrefManager.writeString("email",emailEditText.getText().toString());
                         sharedPrefManager.writeString("password",passwordEditText.getText().toString());
-                        Toast.makeText(LoginRegistrationActivity1.this, "Values written to shared Preferences", Toast.LENGTH_SHORT).show();
                     }
 
-                    Toast.makeText(LoginRegistrationActivity1.this, "Login successful!", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(LoginRegistrationActivity1.this, "Login successful!", Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(LoginRegistrationActivity1.this,HomeActivity.class));
                 } else {
                     Toast.makeText(LoginRegistrationActivity1.this, "Login failed. Check your credentials.", Toast.LENGTH_SHORT).show();
                 }

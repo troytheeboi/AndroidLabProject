@@ -1,43 +1,60 @@
 <!-- fragment_car_details.xml -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
     <ImageView
         android:id="@+id/carImageView"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:src="@drawable/car"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp"/>
+        android:layout_width="350dp"
+        android:layout_height="190dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="33dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="28dp"
+        android:src="@drawable/car" />
 
     <TextView
         android:id="@+id/carNameTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Car Name"
-        android:textSize="18sp"
+        android:layout_width="246dp"
+        android:layout_height="35dp"
         android:layout_below="@id/carImageView"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp"/>
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="49dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="116dp"
+        android:text="Car Name"
+        android:textAlignment="viewStart"
+        android:textColor="#040000"
+        android:textSize="18sp"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/carModelTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Car Model"
+        android:layout_width="247dp"
+        android:layout_height="33dp"
         android:layout_below="@id/carNameTextView"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="8dp"/>
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="3dp"
+        android:layout_marginEnd="132dp"
+        android:text="Car Model"
+        android:textAlignment="viewStart"
+        android:textColor="#050000"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/carPriceTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Car Price"
+        android:layout_width="92dp"
+        android:layout_height="33dp"
         android:layout_below="@id/carModelTextView"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="8dp"/>
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="292dp"
+        android:layout_marginTop="-73dp"
+        android:layout_marginEnd="25dp"
+        android:text="Car Price"
+        android:textColor="#0B0000" />
 
     <!-- Add more TextViews or other components for additional car details -->
 
