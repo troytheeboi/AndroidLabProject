@@ -1,4 +1,7 @@
 package com.example.myapplication16;
+import static com.example.myapplication16.DatabaseHelper.DATABASE_NAME;
+import static com.example.myapplication16.LoginRegistrationActivity1.currentUser;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,36 +16,30 @@ import java.util.List;
 
 public class SpecialOffersFragment extends Fragment {
 
-//    private RecyclerView specialOffersRecyclerView;
-//    private List<SpecialOffer> specialOffersList;
-//
-//    public SpecialOffersFragment() {
-//        // Required empty public constructor
-//    }
-//
-//    @Nullable
-//    @Override
-//    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-//        View view = inflater.inflate(R.layout.fragment_special_offers, container, false);
-//
-//        // Initialize UI components
-//        specialOffersRecyclerView = view.findViewById(R.id.specialOffersRecyclerView);
-//
-//        // Initialize and populate the list of special offers (you need to create a SpecialOffer class)
-//        specialOffersList = getSpecialOffersList();
-//
-//        // Set up RecyclerView
-//        SpecialOfferAdapter specialOfferAdapter = new SpecialOfferAdapter(specialOffersList);
-//        specialOffersRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-//        specialOffersRecyclerView.setAdapter(specialOfferAdapter);
-//
-//        return view;
-//    }
-//
-//    // Helper method to get a list of special offers (replace with your actual data)
-//    private List<SpecialOffer> getSpecialOffersList() {
-//        List<SpecialOffer> specialOffers = new ArrayList<>();
-//        // Add your special offer data here
-//        return specialOffers;
-//    }
+    public SpecialOffersFragment() {
+        // Required empty public constructor
+    }
+
+    private RecyclerView carRecyclerView;
+    private CarAdapter carAdapter;
+
+
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_car_menu, container, false);
+
+        DatabaseHelper dbHelper =new DatabaseHelper(view.getContext(),DATABASE_NAME,null,1);
+
+        carRecyclerView = view.findViewById(R.id.carRecyclerView);
+        carRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        List<Car> cars = dbHelper.getOfferCars();
+        carAdapter = new CarAdapter(cars);
+        carRecyclerView.setAdapter(carAdapter);
+
+        dbHelper.close();
+
+        return view;
+    }
+
+
 }

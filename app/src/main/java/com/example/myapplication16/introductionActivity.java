@@ -17,8 +17,6 @@ public class introductionActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        Log.i(TAG, "onCreate: Hello World!");
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_introduction);
         setProgress(false);
@@ -28,13 +26,10 @@ public class introductionActivity extends AppCompatActivity {
         connectButton = findViewById(R.id.connectButton);
 
         // Set a click listener for the Connect button
-        connectButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // Execute the AsyncTask to connect to the server
-                ConnectionAsyncTask connectionAsyncTask = new ConnectionAsyncTask(introductionActivity.this, introductionActivity.this);
-                connectionAsyncTask.execute("https://lab-android.free.beeceptor.com/cars");
-            }
+        connectButton.setOnClickListener(view -> {
+            // Execute the AsyncTask to connect to the server
+            ConnectionAsyncTask connectionAsyncTask = new ConnectionAsyncTask(introductionActivity.this);
+            connectionAsyncTask.execute("https://forandroid.free.beeceptor.com/cars");
         });
     }
 
@@ -43,7 +38,7 @@ public class introductionActivity extends AppCompatActivity {
     }
 
     public void setProgress(boolean progress) {
-        ProgressBar progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        ProgressBar progressBar = findViewById(R.id.progressBar);
         if (progress) {
             progressBar.setVisibility(View.VISIBLE);
         } else {

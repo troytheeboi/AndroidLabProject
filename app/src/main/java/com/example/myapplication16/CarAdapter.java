@@ -1,11 +1,19 @@
 package com.example.myapplication16;
 
+import static com.example.myapplication16.ConnectionAsyncTask.cars;
+import static com.example.myapplication16.DatabaseHelper.DATABASE_NAME;
+import static com.example.myapplication16.LoginRegistrationActivity1.currentUser;
+
+
 import android.content.Context;
+import android.graphics.drawable.TransitionDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -39,6 +47,53 @@ public class CarAdapter extends RecyclerView.Adapter<CarAdapter.CarHolder>{
         holder.carPrice.setText(String.valueOf(car.getPrice()));
         Picasso.with(holder.carImage.getContext()).load(car.getImageURL()).into(holder.carImage);
 
+        holder.fav.setOnClickListener(v -> {
+
+            int userId = currentUser;
+
+            Car clickedCar = null;
+            int clickedPosition = holder.getAdapterPosition();
+            if (clickedPosition != RecyclerView.NO_POSITION) {
+                // Get the clicked car item
+                clickedCar = carList.get(clickedPosition);
+            }
+
+            DatabaseHelper dbHelper =new DatabaseHelper(holder.carImage.getContext(),DATABASE_NAME,null,1);
+
+            dbHelper.insertFav(userId,clickedCar.getId());
+
+            dbHelper.close();
+
+            Toast.makeText(holder.carImage.getContext(), "Added to favourites!" + clickedCar.getType(), Toast.LENGTH_SHORT).show();
+
+            TransitionDrawable transitionDrawable = (TransitionDrawable) holder.fav.getDrawable();
+            transitionDrawable.startTransition(1000);
+
+
+        });
+
+        holder.reserve.setOnClickListener(v -> {
+
+            int userId = currentUser;
+
+            Car clickedCar = null;
+            int clickedPosition = holder.getAdapterPosition();
+            if (clickedPosition != RecyclerView.NO_POSITION) {
+                // Get the clicked car item
+                clickedCar = carList.get(clickedPosition);
+            }
+
+            DatabaseHelper dbHelper =new DatabaseHelper(holder.carImage.getContext(),DATABASE_NAME,null,1);
+
+            dbHelper.insertReservation(userId,clickedCar.getId());
+
+            dbHelper.close();
+
+            Toast.makeText(holder.carImage.getContext(), "Added Reservation!" + clickedCar.getType(), Toast.LENGTH_SHORT).show();
+
+
+        });
+
     }
 
     @Override
@@ -53,12 +108,18 @@ public class CarAdapter extends RecyclerView.Adapter<CarAdapter.CarHolder>{
         TextView carModel;
         TextView carPrice;
 
+        ImageButton fav;
+
+        ImageView reserve;
+
         public CarHolder(@NonNull View itemView) {
             super(itemView);
             carImage = (ImageView) itemView.findViewById(R.id.carImageView);
             carName = (TextView) itemView.findViewById(R.id.carNameTextView);
             carModel = (TextView) itemView.findViewById(R.id.carModelTextView);
             carPrice = (TextView) itemView.findViewById(R.id.carPriceTextView);
+            fav = (ImageButton) itemView.findViewById(R.id.favButton4);
+            reserve = (ImageButton) itemView.findViewById(R.id.reserveButton3);
         }
     }
 }

@@ -24,6 +24,10 @@ public class LoginRegistrationActivity1 extends AppCompatActivity {
 
     SharedPrefManager sharedPrefManager;
 
+//    public static Cursor getUserByMail;
+
+    public static int currentUser;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,8 +56,6 @@ public class LoginRegistrationActivity1 extends AppCompatActivity {
 
                 boolean loginSuccess = true;
 
-
-
                 // Get the entered email and password
                 String enteredEmail = emailEditText.getText().toString().trim();
                 String enteredPassword = passwordEditText.getText().toString();
@@ -68,16 +70,17 @@ public class LoginRegistrationActivity1 extends AppCompatActivity {
                 }
 
 
-
-
                 if( !enteredEmail.isEmpty() && !enteredPassword.isEmpty()){
                     
                     DatabaseHelper dbHelper =new DatabaseHelper(LoginRegistrationActivity1.this,DATABASE_NAME,null,1);
 
+
                     Cursor getUserByMail = dbHelper.getByEmail(enteredEmail);
 
-                    getUserByMail.moveToNext();
-                    
+                    getUserByMail.moveToFirst();
+
+                    currentUser = getUserByMail.getInt(0);
+
 
                     boolean exists = dbHelper.isCursorEmpty(getUserByMail);
 
@@ -87,6 +90,8 @@ public class LoginRegistrationActivity1 extends AppCompatActivity {
                     }else{
 
                         String password = getUserByMail.getString(5);
+
+                        dbHelper.close();
 
                         if(password.equals(enteredPassword)){
                             loginSuccess = true;
@@ -106,8 +111,6 @@ public class LoginRegistrationActivity1 extends AppCompatActivity {
                         sharedPrefManager.writeString("email",emailEditText.getText().toString());
                         sharedPrefManager.writeString("password",passwordEditText.getText().toString());
                     }
-
-//                    Toast.makeText(LoginRegistrationActivity1.this, "Login successful!", Toast.LENGTH_SHORT).show();
                     startActivity(new Intent(LoginRegistrationActivity1.this,HomeActivity.class));
                 } else {
                     Toast.makeText(LoginRegistrationActivity1.this, "Login failed. Check your credentials.", Toast.LENGTH_SHORT).show();

@@ -1,40 +1,17 @@
-<!-- fragment_reservation_dialog.xml -->
+<!-- fragment_favorites.xml -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/carDetailsTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Car Details: [Car Name, Model, etc.]"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp"/>
-
-    <EditText
-        android:id="@+id/customerNameEditText"
+    <!-- Add a RecyclerView to display a list of favorite cars -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/reserveRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Your Name"
-        android:inputType="textPersonName"
-        android:layout_below="@id/carDetailsTextView"
-        android:layout_marginTop="16dp"/>
+        android:layout_height="match_parent"
+        android:layout_below="@id/titleTextView"
+        android:layout_marginTop="8dp"
+        tools:ignore="NotSibling" />
 
-    <EditText
-        android:id="@+id/customerEmailEditText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Your Email"
-        android:inputType="textEmailAddress"
-        android:layout_below="@id/customerNameEditText"
-        android:layout_marginTop="8dp"/>
 
-    <Button
-        android:id="@+id/submitButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Submit Reservation"
-        android:layout_below="@id/customerEmailEditText"
-        android:layout_marginTop="16dp"
-        android:layout_centerHorizontal="true"/>
 </RelativeLayout>

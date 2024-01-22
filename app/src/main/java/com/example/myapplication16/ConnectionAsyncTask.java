@@ -14,12 +14,10 @@ public class ConnectionAsyncTask extends AsyncTask<String, String, String> {
     Activity activity;
     public static List<Car> cars = new ArrayList<>();
 
-    private Context context;
 
-    public ConnectionAsyncTask(Activity activity, Context context) {
+    public ConnectionAsyncTask(Activity activity) {
 
         this.activity = activity;
-        this.context = context;
     }
 
     @Override protected void onPreExecute() {
@@ -46,15 +44,18 @@ public class ConnectionAsyncTask extends AsyncTask<String, String, String> {
         ((introductionActivity) activity).toLogin();
 
         //first time the db was created this was run to get data from api in local db
-
+            DatabaseHelper dataBaseHelper = null;
         for(Car car : cars){
 
-            DatabaseHelper dataBaseHelper =new DatabaseHelper(context,DATABASE_NAME,null,1);
+            dataBaseHelper =new DatabaseHelper(activity,DATABASE_NAME,null,1);
 
             // Perform registration and insert data into the database
             dataBaseHelper.insertCarData(car);
 
         }
+
+        dataBaseHelper.close();
+
 
         }else{
             Toast.makeText(activity, "No Internet Connection or Failed to Fetch Data", Toast.LENGTH_SHORT).show();

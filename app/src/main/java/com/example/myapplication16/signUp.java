@@ -172,6 +172,8 @@ public class signUp extends AppCompatActivity {
             // Perform registration and insert data into the database
             dataBaseHelper.insertUserData(toInsert);
 
+            dataBaseHelper.close();
+
             // Show a success message
             showToast("Registration successful! User: " + firstName + " " + lastName + ", Country: " + country + ", City: " + city + ", Phone: " + phoneNumber);
 

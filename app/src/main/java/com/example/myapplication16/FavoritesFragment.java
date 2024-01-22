@@ -1,4 +1,9 @@
 package com.example.myapplication16;
+import static com.example.myapplication16.ConnectionAsyncTask.cars;
+import static com.example.myapplication16.DatabaseHelper.DATABASE_NAME;
+import static com.example.myapplication16.LoginRegistrationActivity1.currentUser;
+
+
 import android.os.Bundle;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -15,47 +20,32 @@ import java.util.List;
 
 public class FavoritesFragment extends Fragment {
 
-    private RecyclerView favoritesRecyclerView;
-//    private List<FavoriteCar> favoriteCarsList;
-    private Button clearFavoritesButton;
+
 
     public FavoritesFragment() {
         // Required empty public constructor
     }
 
-//    @Nullable
-//    @Override
-//    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-//        View view = inflater.inflate(R.layout.fragment_favorites, container, false);
-//
-//        // Initialize UI components
-//        favoritesRecyclerView = view.findViewById(R.id.favoritesRecyclerView);
-//        clearFavoritesButton = view.findViewById(R.id.clearFavoritesButton);
-//
-//        // Initialize and populate the list of favorite cars (you need to create a FavoriteCar class)
-//        favoriteCarsList = getFavoriteCarsList();
-//
-//        // Set up RecyclerView
-//        FavoriteCarAdapter favoriteCarAdapter = new FavoriteCarAdapter(favoriteCarsList);
-//        favoritesRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-//        favoritesRecyclerView.setAdapter(favoriteCarAdapter);
-//
-//        // Set up click listener for the clear favorites button
-//        clearFavoritesButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                // Handle the click event to clear all favorites
-//                // You may want to show a confirmation dialog and perform the actual action
-//            }
-//        });
-//
-//        return view;
-//    }
-//
-//    // Helper method to get a list of favorite cars (replace with your actual data)
-//    private List<FavoriteCar> getFavoriteCarsList() {
-//        List<FavoriteCar> favoriteCars = new ArrayList<>();
-//        // Add your favorite car data here
-//        return favoriteCars;
-//    }
+    private RecyclerView carRecyclerView;
+    private CarAdapter carAdapter;
+
+
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_car_menu, container, false);
+
+        DatabaseHelper dbHelper =new DatabaseHelper(view.getContext(),DATABASE_NAME,null,1);
+
+        carRecyclerView = view.findViewById(R.id.carRecyclerView);
+        carRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        List<Car> cars = dbHelper.getFavsByUser(currentUser);
+        carAdapter = new CarAdapter(cars);
+        carRecyclerView.setAdapter(carAdapter);
+
+        dbHelper.close();
+
+        return view;
+    }
+
+
 }
